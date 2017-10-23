@@ -1,16 +1,5 @@
 <?php
-echo "inside upload";
-$target_dir = "uploads/";
-$target_file = $target_dir . basename($_FILES["fileToUpload"]["tmp_name"]);
-$FileType = pathinfo($target_file,PATHINFO_EXTENSION);
-// Check if file is a csv file
-print_r($_FILES);
-if(isset($_POST["submit"])) {
-   $fileName=$_FILES["fileToUpload"]["name"];
-   move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], 'uploads/' . $_FILES["fileToUpload"]["name"]);
-header("Location: http://web.njit.edu/~hs563/IS601Project1/index.php?page=htmlTable&filename=".$_FILES["fileToUpload"]["name"]);
-  echo "inside if";
-}
+
 //turn on debugging messages
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
@@ -131,7 +120,7 @@ class homepage extends page
     
     public function get()
     {
-        $form = '<form action="upload.php" method="post" enctype="multipart/form-data">';
+        $form = '<form action="index.php?page=homepage" method="post" enctype="multipart/form-data">';
         echo $form;
         $form = '<input type="file" name="fileToUpload" id="fileToUpload">';
         echo $form;
@@ -145,8 +134,26 @@ class homepage extends page
     }
     
     public function post() {
-        echo 'test';
-        print_r($_FILES);
+        uploads::upload();
     }
 }
+
+class uploads extends page
+{
+ public static function upload()
+ {
+$target_dir = "uploads/";
+$target_file = $target_dir . basename($_FILES["fileToUpload"]["tmp_name"]);
+$FileType = pathinfo($target_file,PATHINFO_EXTENSION);
+// Check if file is a csv file
+print_r($_FILES);
+if(isset($_POST["submit"])) {
+   $fileName=$_FILES["fileToUpload"]["name"];
+   move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], 'uploads/' . $_FILES["fileToUpload"]["name"]);
+header("Location: http://web.njit.edu/~hs563/project01/index.php?page=htmlTable&filename=".$_FILES["fileToUpload"]["name"]);
+ 
+}
+}
+}
+
 ?>
